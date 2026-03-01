@@ -403,6 +403,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background: #000;
   }
 
   .media-wrapper {
@@ -413,6 +414,10 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    background: #000;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: contents;
   }
 
   .media-item {
@@ -491,36 +496,37 @@
     box-shadow: 0 0 10px var(--pink);
   }
 
-  /* Skip button */
-  .skip-btn {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    z-index: 20;
-    background: rgba(255,107,157,0.25);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,107,157,0.5);
-    border-radius: 25px;
-    padding: 10px 22px;
-    color: white;
-    font-size: 0.9rem;
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 600;
-    cursor: pointer;
-    letter-spacing: 0.5px;
-    transition: background 0.2s;
-  }
-
-  .skip-btn:active { background: rgba(255,107,157,0.5); }
-
   /* Tap hint */
   .tap-hint {
     position: absolute;
-    bottom: 28px;
-    left: 20px;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 20;
-    font-size: 0.8rem;
-    color: rgba(255,255,255,0.5);
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.45);
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+  }
+
+  /* Pause overlay */
+  .pause-overlay {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    z-index: 40;
+    width: 90px; height: 90px;
+    background: rgba(255,107,157,0.25);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,107,157,0.6);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem;
+    transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    pointer-events: none;
+  }
+  .pause-overlay.visible {
+    transform: translate(-50%, -50%) scale(1);
   }
 
   /* ===== NOTIFICATIONS ===== */
@@ -771,9 +777,11 @@
     <!-- Notifications -->
     <div class="notif-container" id="notifContainer"></div>
 
+    <!-- Pause overlay -->
+    <div class="pause-overlay" id="pauseOverlay">⏸️</div>
+
     <!-- Bottom controls -->
-    <div class="tap-hint" id="tapHint">💖 Our Memories</div>
-    <button class="skip-btn" id="skipBtn" onclick="skipMedia()">Skip ⏭️</button>
+    <div class="tap-hint" id="tapHint">👆 Hold to pause • Double tap to skip</div>
     <div class="progress-bar" id="progressBar"></div>
   </div>
 </div>
@@ -880,26 +888,26 @@ function launchConfetti() {
 //  GALLERY
 // ==========================================
 const NOTIFICATIONS = [
-  { icon: '💖', title: 'My Heart Belongs to You Baby', text: 'Every time I see you, my heart skips a beat. You are everything I have ever dreamed of.' },
-  { icon: '🌹', title: 'My Eternal Rose', text: 'Like a rose that never fades, my love for you will bloom forever and ever.' },
-  { icon: '✨', title: 'You Light Up My World Amul', text: 'In your eyes, I found a universe. You make every ordinary day feel magical.' },
-  { icon: '🥰', title: 'Crazy About You My Wife', text: 'The way you laugh, the way you smile — I am completely and hopelessly in love with you.' },
-  { icon: '🌸', title: 'My Beautiful Flower', text: 'You are the most beautiful soul I have ever encountered. Pure, gentle, and wonderful.' },
-  { icon: '💫', title: 'Written in the Stars', text: 'I believe the universe conspired to bring us together. Every star above knows your name.' },
-  { icon: '🎵', title: 'My Favorite Song', text: 'If my life were a song, you would be my favorite verse — the one I replay over and over.' },
-  { icon: '🌙', title: 'My Moonlight Amul', text: 'Even on the darkest nights, you are the moonlight that guides me home safely.' },
-  { icon: '💝', title: 'Friendship Turned Into Love', text: 'What started as the purest friendship blossomed into the most beautiful love story.' },
-  { icon: '🔥', title: 'You Set My Soul on Fire', text: 'Your passion, your energy, your spirit — you ignite something in me I never knew existed.' },
-  { icon: '🌊', title: 'Swept Away by You', text: 'You swept me off my feet like a wave, and I never want to find solid ground again.' },
-  { icon: '🦋', title: 'You Give Me Butterflies', text: 'Every single day with you still feels like falling in love for the very first time.' },
-  { icon: '☀️', title: 'My Sunshine', text: 'You are the reason I wake up smiling. My morning, my evening, my everything.' },
-  { icon: '💎', title: 'My Precious Gem', text: 'You are rarer and more precious than any diamond. I am the luckiest person alive.' },
-  { icon: '🌺', title: 'In Full Bloom With You', text: 'Since you came into my life, everything has been in full, beautiful, colorful bloom.' },
-  { icon: '🎯', title: 'You Hit the Bullseye', text: 'Of all the people in this world, you hit my heart with perfect precision. Just you.' },
-  { icon: '🏡', title: 'Home is Where You Are', text: 'No matter where life takes us, as long as you are there, I am home.' },
-  { icon: '⭐', title: 'My Shooting Star', text: 'When I wished upon a star, I got you. The universe was generous that day.' },
-  { icon: '🌈', title: 'My Colorful World Nikitha', text: 'Before you, the world was grey. Now every day is painted in the most gorgeous colors.' },
-  { icon: '💌', title: 'Forever My Love Letter', text: 'You are the love letter I never knew I was writing — perfect, heartfelt, and mine.' },
+  { icon: '💖', title: 'My Entire World, Nikitha', text: 'From the moment I first saw you, Amul knew — this is the girl I want to spend every single lifetime with. You are not just my love, you are my soul.' },
+  { icon: '🌹', title: 'My Forever Rose, Amul\'s Nikitha', text: 'Just like a rose that blooms even in the coldest winter, your love has made the most beautiful garden in my heart, Nikitha. I water it every day with my love for you.' },
+  { icon: '✨', title: 'You Are My Magic, Amul', text: 'Before you, Nikitha, life was just ordinary days. But the moment you walked in, every single second turned into something magical. You are Amul\'s greatest miracle.' },
+  { icon: '🥰', title: 'Completely Yours, Nikitha', text: 'Amul has no words strong enough to describe how deeply, madly, and endlessly he loves you. Every heartbeat says your name — Nikitha, Nikitha, Nikitha.' },
+  { icon: '🌸', title: 'Softer Than a Petal, My Amul', text: 'Your gentleness, your kindness, your beautiful heart — Nikitha, you are softer than the most delicate flower and yet the strongest person Amul has ever known.' },
+  { icon: '💫', title: 'Written in the Stars for Amul', text: 'I truly believe the universe handpicked you especially for Amul, Nikitha. Every star in the sky has been whispering your name long before we even met.' },
+  { icon: '🎵', title: 'Nikitha, You Are Amul\'s Song', text: 'If Amul\'s life were a melody, you would be the most beautiful chorus — the part that plays on repeat, the part that makes everything feel complete, Nikitha.' },
+  { icon: '🌙', title: 'My Moonlight, My Nikitha', text: 'On the darkest nights when everything feels heavy, Amul just thinks of your smile and suddenly the whole sky lights up. You are his moon, his stars, his everything.' },
+  { icon: '💝', title: 'From Friends to Forever, Amul', text: 'What Amul and Nikitha share is so rare and so pure. It started as the most precious friendship and blossomed into the most breathtaking love story ever written.' },
+  { icon: '🔥', title: 'Nikitha Sets Amul\'s Soul on Fire', text: 'Your laugh, your eyes, your voice — every little thing about you ignites a fire in Amul\'s heart that no distance, no time, and no force in this universe can ever extinguish.' },
+  { icon: '🌊', title: 'Drowning in Your Love, Nikitha', text: 'Amul was completely swept away by you — like a wave crashing beautifully onto the shore. And honestly? Amul never wants to find his way back. This is exactly where he belongs.' },
+  { icon: '🦋', title: 'Forever Butterflies, My Amul', text: 'Even after all this time, Nikitha, every time Amul sees your face his heart still flutters like it is the very first day he fell in love with you. That feeling never fades.' },
+  { icon: '☀️', title: 'Nikitha, You Are Amul\'s Sun', text: 'Before you, mornings were just mornings. But now, every sunrise reminds Amul of your beautiful face and every ray of light feels like your warmth wrapping around his heart.' },
+  { icon: '💎', title: 'Rarer Than Diamonds, Nikitha', text: 'Amul has searched this entire world and found nothing — absolutely nothing — as precious, as rare, and as irreplaceable as you, Nikitha. You are his most treasured blessing.' },
+  { icon: '🌺', title: 'In Full Bloom With You, Amul', text: 'Since the day Nikitha entered Amul\'s life, everything has bloomed more beautifully than ever before. You are the reason every season of his life feels like spring.' },
+  { icon: '🏡', title: 'Home is You, Nikitha', text: 'Amul has realized that home is not a place — it is a feeling. And that feeling lives entirely in you, Nikitha. Wherever you are, that is exactly where Amul belongs.' },
+  { icon: '⭐', title: 'Amul\'s Wish Come True', text: 'Once upon a time, Amul closed his eyes and wished for someone perfect. Then the universe smiled and gave him Nikitha. Every wish he has ever made came true in you.' },
+  { icon: '🌈', title: 'My Colorful World, Nikitha', text: 'Amul\'s world was black and white before you, my love. The moment Nikitha arrived, every single corner of his life exploded into the most vibrant, breathtaking colors imaginable.' },
+  { icon: '💌', title: 'A Love Letter Named Nikitha', text: 'If Amul could write every feeling in his heart onto paper, it would fill a thousand books and still not be enough. You, Nikitha, are the most beautiful story he has ever lived.' },
+  { icon: '🫶', title: 'My Wife, My Life, Nikitha', text: 'Amul chose you yesterday, chooses you today, and will keep choosing you every single day for the rest of his life. You are not just his wife — you are the reason his heart beats, Nikitha.' },
 ];
 
 let currentIndex = 0;
@@ -915,24 +923,71 @@ function buildMediaItems() {
   const wrapper = document.getElementById('mediaWrapper');
   wrapper.innerHTML = '';
 
-  // Detect how many files exist by trying to load them (we build placeholders)
-  // Since we can't pre-check server files, we create items 1–50
-  // Images: image1.jpg, image2.jpg, ... Videos: image3.mp4, etc.
-  // User will place files in assets/ folder
-  // We'll create 50 placeholder slots and attempt loading each
-
-  totalMedia = 50; // default max, can be adjusted
+  totalMedia = 50;
   
   for (let i = 1; i <= totalMedia; i++) {
-    // Try image first, then video based on file existence
-    // We'll use a smart detection approach
-    const wrapper2 = document.createElement('div');
-    wrapper2.id = `media-slot-${i}`;
-    wrapper2.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;display:none;';
-    wrapper.appendChild(wrapper2);
+    const slot = document.createElement('div');
+    slot.id = `media-slot-${i}`;
+    slot.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;display:none;';
+    wrapper.appendChild(slot);
   }
 
+  // Pre-detect all available media files first, then start playing
+  detectAllMedia(1, [], () => {});
   loadMedia(1);
+}
+
+// Track which slots are confirmed empty so we can skip them
+const emptySlots = new Set();
+let detectionDone = false;
+
+function detectAllMedia(index, found, callback) {
+  if (index > 50) {
+    detectionDone = true;
+    // Find actual last index
+    if (found.length > 0) {
+      totalMedia = Math.max(...found);
+      updateCounter();
+    }
+    return;
+  }
+
+  const imgExts = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'JPG', 'JPEG', 'PNG'];
+  const vidExts = ['mp4', 'mov', 'webm', 'MP4', 'MOV'];
+
+  function checkExt(extList, extIdx, isVideo) {
+    if (extIdx >= extList.length) {
+      if (!isVideo) {
+        checkExt(vidExts, 0, true);
+      } else {
+        // This slot is empty
+        emptySlots.add(index);
+        detectAllMedia(index + 1, found, callback);
+      }
+      return;
+    }
+    const src = `assets/image${index}.${extList[extIdx]}`;
+    if (isVideo) {
+      const v = document.createElement('video');
+      v.preload = 'metadata';
+      v.src = src;
+      v.oncanplay = () => { found.push(index); detectAllMedia(index + 1, found, callback); };
+      v.onerror = () => checkExt(extList, extIdx + 1, true);
+      setTimeout(() => {
+        if (!found.includes(index) && !emptySlots.has(index)) {
+          v.onerror = null; v.oncanplay = null;
+          checkExt(extList, extIdx + 1, true);
+        }
+      }, 3000);
+    } else {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => { found.push(index); detectAllMedia(index + 1, found, callback); };
+      img.onerror = () => checkExt(extList, extIdx + 1, false);
+    }
+  }
+
+  checkExt(imgExts, 0, false);
 }
 
 function getMediaElement(index) {
@@ -940,6 +995,17 @@ function getMediaElement(index) {
 }
 
 function loadMedia(index) {
+  // Skip confirmed empty slots
+  if (emptySlots.has(index)) {
+    let next = index + 1;
+    let attempts = 0;
+    while (emptySlots.has(next) && attempts < 50) { next++; attempts++; }
+    if (next > totalMedia) next = 1;
+    currentIndex = index;
+    loadMedia(next);
+    return;
+  }
+
   currentIndex = index;
   updateCounter();
 
@@ -961,38 +1027,42 @@ function loadMedia(index) {
   // Try image first
   const img = document.createElement('img');
   img.className = 'media-item';
-  img.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;';
+  // HD quality rendering
+  img.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;background:#000;image-rendering:auto;-webkit-backface-visibility:hidden;backface-visibility:hidden;';
+  img.decoding = 'async';
+  img.loading = 'eager';
 
   const video = document.createElement('video');
   video.className = 'media-item video-item';
-  video.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;';
+  video.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;background:#000;';
   video.playsInline = true;
   video.muted = false;
   video.controls = false;
   video.autoplay = true;
 
-  // Try image extensions
-  const imgExts = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
-  const vidExts = ['mp4', 'mov', 'webm'];
+  const imgExts = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'JPG', 'JPEG', 'PNG'];
+  const vidExts = ['mp4', 'mov', 'webm', 'MP4', 'MOV'];
 
   let loaded = false;
 
   function tryLoad(extIndex, extList, element, isVideo) {
     if (extIndex >= extList.length) {
       if (!isVideo) {
-        // Try video
         tryLoad(0, vidExts, video, true);
       } else {
-        // Nothing found, skip
-        slot.innerHTML = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1A0A1A,#2D1040);"><div style="text-align:center;"><div style="font-size:4rem;">💖</div><div style="color:rgba(255,255,255,0.3);margin-top:10px;font-family:Dancing Script,cursive;font-size:1.5rem;">Our Memory #' + index + '</div></div></div>';
-        totalMedia = Math.min(totalMedia, index);
-        updateCounter();
-        startImageTimer(3000);
+        // Mark this slot empty and move to next
+        emptySlots.add(index);
+        let next = index + 1;
+        if (next > totalMedia) next = 1;
+        // Find next non-empty
+        let attempts = 0;
+        while (emptySlots.has(next) && attempts < totalMedia) { next++; attempts++; if (next > totalMedia) next = 1; }
+        loadMedia(next);
       }
       return;
     }
 
-    const src = `assets/${isVideo ? 'image' : 'image'}${index}.${extList[extIndex]}`;
+    const src = `assets/image${index}.${extList[extIndex]}`;
     element.src = src;
 
     if (isVideo) {
@@ -1002,7 +1072,7 @@ function loadMedia(index) {
         slot.appendChild(element);
         requestAnimationFrame(() => element.classList.add('active'));
         currentVideo = element;
-        document.getElementById('skipBtn').style.display = 'block';
+        isPaused = false;
         element.play().catch(() => {});
         element.onended = () => nextMedia();
         showNotification(index);
@@ -1015,7 +1085,8 @@ function loadMedia(index) {
         loaded = true;
         slot.appendChild(element);
         requestAnimationFrame(() => element.classList.add('active'));
-        document.getElementById('skipBtn').style.display = 'block';
+        isPaused = false;
+        timerRemaining = 3000;
         startImageTimer(3000);
         showNotification(index);
       };
@@ -1028,7 +1099,8 @@ function loadMedia(index) {
 
 function startImageTimer(duration) {
   clearTimeout(timer);
-  clearInterval(progressTimer);
+  timerRemaining = duration;
+  timerStarted = Date.now();
 
   const bar = document.getElementById('progressBar');
   bar.style.transition = 'none';
@@ -1049,11 +1121,20 @@ function nextMedia() {
   clearInterval(progressTimer);
 
   let next = currentIndex + 1;
-  if (next > totalMedia) next = 1; // loop
+  if (next > totalMedia) next = 1;
+  // Skip confirmed empty slots
+  let attempts = 0;
+  while (emptySlots.has(next) && attempts < totalMedia) {
+    next++;
+    attempts++;
+    if (next > totalMedia) next = 1;
+  }
   loadMedia(next);
 }
 
 function skipMedia() {
+  isPaused = false;
+  document.getElementById('pauseOverlay').classList.remove('visible');
   if (currentVideo) {
     currentVideo.pause();
     currentVideo = null;
@@ -1121,14 +1202,116 @@ function goBack() {
 }
 
 // ==========================================
-//  Touch/Click anywhere on gallery to skip image
+//  PAUSE / RESUME
 // ==========================================
-document.getElementById('galleryPage').addEventListener('click', function(e) {
-  const skipBtn = document.getElementById('skipBtn');
-  const backBtn = document.querySelector('.gallery-back');
-  if (e.target === skipBtn || e.target === backBtn) return;
+let isPaused = false;
+let pausedAt = 0;
+let timerRemaining = 3000;
+let timerStarted = 0;
 
+function pauseMedia() {
+  if (isPaused) return;
+  isPaused = true;
+
+  // Pause image timer
   if (!currentVideo) {
+    clearTimeout(timer);
+    const bar = document.getElementById('progressBar');
+    const elapsed = Date.now() - timerStarted;
+    timerRemaining = Math.max(0, timerRemaining - elapsed);
+    bar.style.transition = 'none';
+    // freeze bar width in place
+    const computed = window.getComputedStyle(bar).width;
+    bar.style.width = computed;
+  }
+
+  // Pause video
+  if (currentVideo) {
+    currentVideo.pause();
+  }
+
+  document.getElementById('pauseOverlay').classList.add('visible');
+}
+
+function resumeMedia() {
+  if (!isPaused) return;
+  isPaused = false;
+
+  document.getElementById('pauseOverlay').classList.remove('visible');
+
+  if (currentVideo) {
+    currentVideo.play().catch(() => {});
+  } else {
+    startImageTimer(timerRemaining);
+  }
+}
+
+// ==========================================
+//  HOLD TO PAUSE + DOUBLE TAP TO SKIP
+// ==========================================
+let holdTimer = null;
+let lastTapTime = 0;
+let holdActivated = false;
+
+const galleryPage = document.getElementById('galleryPage');
+
+galleryPage.addEventListener('touchstart', function(e) {
+  const backBtn = document.querySelector('.gallery-back');
+  if (e.target === backBtn || backBtn.contains(e.target)) return;
+
+  holdActivated = false;
+  holdTimer = setTimeout(() => {
+    holdActivated = true;
+    pauseMedia();
+  }, 180); // hold 180ms = pause
+}, { passive: true });
+
+galleryPage.addEventListener('touchend', function(e) {
+  const backBtn = document.querySelector('.gallery-back');
+  if (e.target === backBtn || backBtn.contains(e.target)) return;
+
+  clearTimeout(holdTimer);
+
+  if (holdActivated) {
+    // Was a hold — resume on release
+    resumeMedia();
+    return;
+  }
+
+  // Check double tap
+  const now = Date.now();
+  const timeSinceLastTap = now - lastTapTime;
+  lastTapTime = now;
+
+  if (timeSinceLastTap < 350) {
+    // Double tap — skip
+    skipMedia();
+  }
+}, { passive: true });
+
+// Mouse support for desktop testing
+galleryPage.addEventListener('mousedown', function(e) {
+  const backBtn = document.querySelector('.gallery-back');
+  if (e.target === backBtn || backBtn.contains(e.target)) return;
+  holdActivated = false;
+  holdTimer = setTimeout(() => {
+    holdActivated = true;
+    pauseMedia();
+  }, 180);
+});
+
+galleryPage.addEventListener('mouseup', function(e) {
+  const backBtn = document.querySelector('.gallery-back');
+  if (e.target === backBtn || backBtn.contains(e.target)) return;
+  clearTimeout(holdTimer);
+  if (holdActivated) {
+    resumeMedia();
+    return;
+  }
+  const now = Date.now();
+  const timeSinceLastTap = now - lastTapTime;
+  lastTapTime = now;
+  if (timeSinceLastTap < 350) {
     skipMedia();
   }
 });
