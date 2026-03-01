@@ -514,12 +514,11 @@
     display: none;
   }
 
-  /* Prevent iOS long-press save menu on all media */
+  /* Prevent iOS long-press save menu on all media - keep display intact */
   img, video {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     user-select: none;
-    pointer-events: none;
   }
 
   /* Gallery page blocks default touch actions */
@@ -1028,13 +1027,13 @@ function loadMedia(index) {
   const img = document.createElement('img');
   img.className = 'media-item';
   // HD quality rendering
-  img.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;background:#000;image-rendering:auto;-webkit-backface-visibility:hidden;backface-visibility:hidden;';
+  img.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;background:#000;image-rendering:auto;-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-touch-callout:none;';
   img.decoding = 'async';
   img.loading = 'eager';
 
   const video = document.createElement('video');
   video.className = 'media-item video-item';
-  video.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;background:#000;';
+  video.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;background:#000;-webkit-touch-callout:none;';
   video.playsInline = true;
   video.muted = false;
   video.controls = false;
