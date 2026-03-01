@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>💖 A Special Surprise For You 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #FF6B9D;
+    --rose: #FF4B8A;
+    --purple: #C84B8C;
+    --violet: #9B4DCA;
+    --lavender: #D4A5F5;
+    --peach: #FFB3C6;
+    --gold: #FFD700;
+    --bg-dark: #1A0A1A;
+    --bg-mid: #2D1040;
+    --glass: rgba(255,255,255,0.08);
+    --glass-border: rgba(255,107,157,0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Quicksand', sans-serif;
+    background: var(--bg-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+    color: white;
+  }
+
+  /* ===== FLOATING HEARTS BACKGROUND ===== */
+  .hearts-bg {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .heart-float {
+    position: absolute;
+    bottom: -50px;
+    font-size: 1.5rem;
+    opacity: 0;
+    animation: floatUp linear infinite;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) rotate(0deg) scale(0.5); opacity: 0.7; }
+    100% { transform: translateY(-110vh) rotate(360deg) scale(1.2); opacity: 0; }
+  }
+
+  /* ===== GRADIENT BACKGROUND ===== */
+  .gradient-bg {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(ellipse at 20% 20%, #3D0B55 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, #5C0D3D 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, #1A0A1A 0%, #0D0520 100%);
+    z-index: 0;
+  }
+
+  /* ===== PAGES ===== */
+  .page {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease;
+  }
+
+  .page.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* ===== LOGIN PAGE ===== */
+  #loginPage {
+    padding: 20px;
+  }
+
+  .login-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px);
+    border-radius: 30px;
+    padding: 40px 30px;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+    box-shadow: 0 0 60px rgba(255,107,157,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+    animation: cardPulse 3s ease-in-out infinite;
+  }
+
+  @keyframes cardPulse {
+    0%, 100% { box-shadow: 0 0 60px rgba(255,107,157,0.2), inset 0 1px 0 rgba(255,255,255,0.1); }
+    50% { box-shadow: 0 0 80px rgba(255,107,157,0.4), inset 0 1px 0 rgba(255,255,255,0.1); }
+  }
+
+  .login-emoji {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 10px;
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .login-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    background: linear-gradient(135deg, var(--peach), var(--pink), var(--lavender));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+
+  .login-sub {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 30px;
+    font-style: italic;
+  }
+
+  .input-group {
+    position: relative;
+    margin-bottom: 18px;
+    text-align: left;
+  }
+
+  .input-group label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--lavender);
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .input-group input {
+    width: 100%;
+    padding: 14px 18px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,107,157,0.3);
+    border-radius: 14px;
+    color: white;
+    font-size: 1rem;
+    font-family: 'Quicksand', sans-serif;
+    outline: none;
+    transition: all 0.3s;
+  }
+
+  .input-group input:focus {
+    border-color: var(--pink);
+    background: rgba(255,107,157,0.1);
+    box-shadow: 0 0 20px rgba(255,107,157,0.2);
+  }
+
+  .input-group input::placeholder { color: rgba(255,255,255,0.3); }
+
+  .login-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--rose), var(--purple));
+    border: none;
+    border-radius: 14px;
+    color: white;
+    font-size: 1.1rem;
+    font-family: 'Dancing Script', cursive;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    margin-top: 10px;
+  }
+
+  .login-btn:active { transform: scale(0.97); }
+
+  .login-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: linear-gradient(transparent, rgba(255,255,255,0.1), transparent);
+    transform: rotate(45deg) translateY(-100%);
+    transition: transform 0.5s;
+  }
+
+  .login-btn:active::before { transform: rotate(45deg) translateY(100%); }
+
+  .error-msg {
+    color: #FF6B6B;
+    font-size: 0.85rem;
+    margin-top: 12px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .error-msg.show { opacity: 1; }
+
+  /* ===== BIRTHDAY PAGE ===== */
+  #birthdayPage {
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 40px 20px 80px;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    -webkit-overflow-scrolling: touch;
+    scroll-padding-bottom: 80px;
+  }
+
+  .bday-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .bday-main-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.8rem;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #FFD700, var(--pink), var(--lavender), var(--peach));
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 3s ease infinite;
+    text-shadow: none;
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .bday-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--lavender);
+    margin-top: 8px;
+    opacity: 0.9;
+  }
+
+  /* Emoji Parade */
+  .emoji-parade {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+  }
+
+  .emoji-item {
+    font-size: 2.5rem;
+    animation: emojiFloat 2s ease-in-out infinite;
+  }
+
+  .emoji-item:nth-child(2) { animation-delay: 0.2s; }
+  .emoji-item:nth-child(3) { animation-delay: 0.4s; }
+  .emoji-item:nth-child(4) { animation-delay: 0.6s; }
+  .emoji-item:nth-child(5) { animation-delay: 0.8s; }
+
+  @keyframes emojiFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-8px) rotate(-5deg); }
+    75% { transform: translateY(-4px) rotate(5deg); }
+  }
+
+  /* Message Card */
+  .message-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 28px 24px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 20px 60px rgba(200,75,140,0.2);
+  }
+
+  .message-card p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.9);
+    font-style: italic;
+  }
+
+  .message-card .highlight {
+    color: var(--pink);
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  /* Decorative Hearts Row */
+  .hearts-row {
+    text-align: center;
+    font-size: 1.4rem;
+    letter-spacing: 8px;
+    margin: 15px 0;
+    animation: sparkle 2s ease-in-out infinite;
+  }
+
+  @keyframes sparkle {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.05); }
+  }
+
+  /* Gift Cards Row */
+  .gift-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 380px;
+    width: 100%;
+    margin: 20px auto;
+  }
+
+  .gift-card {
+    background: linear-gradient(135deg, rgba(255,107,157,0.2), rgba(155,77,202,0.2));
+    border: 1px solid rgba(255,107,157,0.3);
+    border-radius: 20px;
+    padding: 18px 10px;
+    text-align: center;
+    animation: giftPop 0.5s ease backwards;
+  }
+
+  .gift-card:nth-child(2) { animation-delay: 0.1s; }
+  .gift-card:nth-child(3) { animation-delay: 0.2s; }
+
+  @keyframes giftPop {
+    from { transform: scale(0) rotate(-10deg); opacity: 0; }
+    to { transform: scale(1) rotate(0); opacity: 1; }
+  }
+
+  .gift-card .icon { font-size: 2rem; display: block; margin-bottom: 6px; }
+  .gift-card .label { font-size: 0.75rem; color: var(--lavender); font-weight: 600; }
+
+  /* Confetti Button */
+  .explore-btn {
+    display: block;
+    width: calc(100% - 40px);
+    max-width: 320px;
+    margin: 30px auto 0;
+    padding: 20px 30px;
+    background: linear-gradient(135deg, #FF4B8A, #C84B8C, #9B4DCA);
+    background-size: 200% 200%;
+    animation: btnGlow 3s ease infinite;
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-size: 1.3rem;
+    font-family: 'Dancing Script', cursive;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 1px;
+    box-shadow: 0 10px 40px rgba(255,75,138,0.5), 0 0 0 3px rgba(255,107,157,0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+    white-space: nowrap;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  @keyframes btnGlow {
+    0%, 100% { background-position: 0% 50%; box-shadow: 0 10px 40px rgba(255,75,138,0.4); }
+    50% { background-position: 100% 50%; box-shadow: 0 15px 50px rgba(155,77,202,0.6); }
+  }
+
+  .explore-btn:active { transform: scale(0.96); }
+
+  /* ===== GALLERY PAGE ===== */
+  #galleryPage {
+    background: #0A0010;
+    overflow: hidden;
+    flex-direction: column;
+  }
+
+  .gallery-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .media-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .media-item {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: contain;
+    background: #000;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+
+  .media-item.active { opacity: 1; }
+
+  /* Dark overlay gradient */
+  .media-overlay {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 55%;
+    background: linear-gradient(transparent, rgba(5,0,12,0.97));
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .media-overlay-top {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 25%;
+    background: linear-gradient(rgba(10,0,16,0.7), transparent);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Gallery UI */
+  .gallery-top {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 10;
+    padding: 50px 20px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .gallery-back {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    border-radius: 50%;
+    width: 42px; height: 42px;
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-size: 1.3rem;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+  }
+
+  .gallery-counter {
+    background: rgba(255,107,157,0.3);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,107,157,0.4);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    color: white;
+    font-weight: 600;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--pink), var(--violet));
+    z-index: 20;
+    transition: width linear;
+    box-shadow: 0 0 10px var(--pink);
+  }
+
+  /* Skip button */
+  .skip-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 20;
+    background: rgba(255,107,157,0.25);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,107,157,0.5);
+    border-radius: 25px;
+    padding: 10px 22px;
+    color: white;
+    font-size: 0.9rem;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: background 0.2s;
+  }
+
+  .skip-btn:active { background: rgba(255,107,157,0.5); }
+
+  /* Tap hint */
+  .tap-hint {
+    position: absolute;
+    bottom: 28px;
+    left: 20px;
+    z-index: 20;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* ===== NOTIFICATIONS ===== */
+  .notif-container {
+    position: absolute;
+    bottom: 80px;
+    left: 0; right: 0;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+    padding: 0 16px;
+  }
+
+  .notif {
+    background: rgba(20, 5, 30, 0.85);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,107,157,0.5);
+    border-radius: 18px;
+    padding: 14px 18px;
+    max-width: 360px;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    transform: translateY(30px);
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 -5px 30px rgba(200,75,140,0.3), 0 10px 40px rgba(0,0,0,0.5);
+  }
+
+  .notif.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .notif-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .notif-content { flex: 1; }
+  .notif-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1rem;
+    color: var(--pink);
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+
+  .notif-text {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.4;
+  }
+
+  /* ===== VIDEO CONTROLS ===== */
+  .video-item {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+  }
+
+  /* ===== CONFETTI ===== */
+  .confetti-piece {
+    position: fixed;
+    top: -20px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: confettiFall linear forwards;
+    z-index: 1000;
+    pointer-events: none;
+  }
+
+  @keyframes confettiFall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ===== SHIMMER LINES ===== */
+  .shimmer-line {
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,107,157,0.5), transparent);
+    animation: shimmerMove 3s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes shimmerMove {
+    0% { transform: translateY(-100px); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(100vh); opacity: 0; }
+  }
+
+  /* Loading overlay */
+  .loading-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--bg-dark);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    transition: opacity 1s ease;
+  }
+
+  .loading-heart {
+    font-size: 4rem;
+    animation: heartBeat 1s ease-in-out infinite;
+  }
+
+  @keyframes heartBeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+  }
+
+  .loading-text {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.5rem;
+    color: var(--pink);
+  }
+
+  /* Responsive */
+  @media (min-width: 480px) {
+    .bday-main-title { font-size: 3.2rem; }
+    .login-card { padding: 50px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-heart">💖</div>
+  <div class="loading-text">Loading your surprise...</div>
+</div>
+
+<!-- Gradient Background -->
+<div class="gradient-bg"></div>
+
+<!-- Floating Hearts Background -->
+<div class="hearts-bg" id="heartsBg"></div>
+
+<!-- ===== PAGE 1: LOGIN ===== -->
+<div class="page active" id="loginPage">
+  <div class="login-card">
+    <span class="login-emoji">🔐</span>
+    <div class="login-title">A Secret Awaits...</div>
+    <div class="login-sub">Enter your details to unlock your surprise 💝</div>
+
+    <div class="input-group">
+      <label>Your ID</label>
+      <input type="text" id="userId" placeholder="Enter your ID" autocomplete="off" spellcheck="false">
+    </div>
+
+    <div class="input-group">
+      <label>Secret Password</label>
+      <input type="password" id="userPass" placeholder="Enter the password" autocomplete="off">
+    </div>
+
+    <button class="login-btn" onclick="doLogin()">✨ Open Your Gift ✨</button>
+    <div class="error-msg" id="errorMsg">💔 Hmm, that's not right. Try again!</div>
+  </div>
+</div>
+
+<!-- ===== PAGE 2: BIRTHDAY ===== -->
+<div class="page" id="birthdayPage">
+  <div class="bday-header">
+    <div class="bday-main-title">🎂 Happy Birthday<br>My Love 💖</div>
+    <div class="bday-subtitle">Today is all about you, Nikitha ✨</div>
+  </div>
+
+  <div class="emoji-parade">
+    <span class="emoji-item">🎂</span>
+    <span class="emoji-item">🎁</span>
+    <span class="emoji-item">💖</span>
+    <span class="emoji-item">🎉</span>
+    <span class="emoji-item">🌹</span>
+  </div>
+
+  <div class="hearts-row">💕 💗 💓 💞 💕</div>
+
+  <div class="message-card">
+    <p>
+      My dearest <span class="highlight">Nikitha</span>,<br><br>
+      On this beautiful day, I want you to know that you are the <span class="highlight">most precious</span> thing that has ever happened to me. Every moment with you feels like a fairytale. 🌸<br><br>
+      Your smile is my sunshine, your laughter is my melody, and your love is my greatest treasure. <span class="highlight">Happy Birthday, my love!</span> 🎊
+    </p>
+  </div>
+
+  <div class="hearts-row">🌹 💐 🌺 💐 🌹</div>
+
+  <div class="gift-cards" style="margin: 20px auto;">
+    <div class="gift-card">
+      <span class="icon">🎂</span>
+      <span class="label">Birthday Cake</span>
+    </div>
+    <div class="gift-card">
+      <span class="icon">💝</span>
+      <span class="label">My Heart</span>
+    </div>
+    <div class="gift-card">
+      <span class="icon">🎁</span>
+      <span class="label">Surprise Gift</span>
+    </div>
+  </div>
+
+  <div class="hearts-row">⭐ 🌟 ✨ 🌟 ⭐</div>
+
+  <div class="message-card" style="margin-top: 0;">
+    <p>
+      From the very first day I met you, I knew you were <span class="highlight">someone special</span>. Thank you for being my best friend, my partner, my everything. 💫<br><br>
+      May this birthday bring you all the <span class="highlight">joy</span>, <span class="highlight">love</span>, and <span class="highlight">happiness</span> you deserve! 🎊
+    </p>
+  </div>
+
+  <button class="explore-btn" onclick="openGallery()">
+    🖼️ Explore Gallery 🖼️
+  </button>
+
+  <div style="height: 60px; flex-shrink: 0;"></div>
+</div>
+
+<!-- ===== PAGE 3: GALLERY ===== -->
+<div class="page" id="galleryPage">
+  <div class="gallery-container">
+    <div class="media-wrapper" id="mediaWrapper">
+      <!-- Media items injected by JS -->
+    </div>
+    <div class="media-overlay"></div>
+    <div class="media-overlay-top"></div>
+
+    <!-- Top bar -->
+    <div class="gallery-top">
+      <button class="gallery-back" onclick="goBack()">←</button>
+      <div class="gallery-counter" id="galleryCounter">1 / 50</div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="notif-container" id="notifContainer"></div>
+
+    <!-- Bottom controls -->
+    <div class="tap-hint" id="tapHint">💖 Our Memories</div>
+    <button class="skip-btn" id="skipBtn" onclick="skipMedia()">Skip ⏭️</button>
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+</div>
+
+<script>
+// ==========================================
+//  FLOATING HEARTS GENERATOR
+// ==========================================
+function createFloatingHearts() {
+  const container = document.getElementById('heartsBg');
+  const emojis = ['💖', '💗', '💓', '💞', '💕', '🌸', '✨', '💫', '🌹', '💝'];
+  
+  setInterval(() => {
+    const heart = document.createElement('div');
+    heart.className = 'heart-float';
+    heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    heart.style.left = Math.random() * 100 + '%';
+    heart.style.fontSize = (Math.random() * 1.5 + 0.8) + 'rem';
+    heart.style.animationDuration = (Math.random() * 6 + 6) + 's';
+    heart.style.animationDelay = '0s';
+    heart.style.opacity = 0;
+    container.appendChild(heart);
+    setTimeout(() => heart.remove(), 13000);
+  }, 600);
+}
+
+// ==========================================
+//  LOADING
+// ==========================================
+window.onload = () => {
+  createFloatingHearts();
+  setTimeout(() => {
+    const overlay = document.getElementById('loadingOverlay');
+    overlay.style.opacity = '0';
+    setTimeout(() => overlay.style.display = 'none', 1000);
+  }, 1500);
+};
+
+// ==========================================
+//  LOGIN
+// ==========================================
+function doLogin() {
+  const id = document.getElementById('userId').value.trim();
+  const pass = document.getElementById('userPass').value.trim();
+  const errorMsg = document.getElementById('errorMsg');
+
+  if (id.toLowerCase() === 'adithya' && pass.toLowerCase() === 'nikitha') {
+    errorMsg.classList.remove('show');
+    showPage('birthdayPage');
+    launchConfetti();
+  } else {
+    errorMsg.classList.add('show');
+    document.querySelector('.login-card').style.animation = 'none';
+    document.querySelector('.login-card').style.transform = 'translateX(-10px)';
+    setTimeout(() => {
+      document.querySelector('.login-card').style.transform = 'translateX(10px)';
+      setTimeout(() => {
+        document.querySelector('.login-card').style.transform = '';
+        document.querySelector('.login-card').style.animation = 'cardPulse 3s ease-in-out infinite';
+      }, 150);
+    }, 150);
+  }
+}
+
+document.getElementById('userPass').addEventListener('keypress', e => {
+  if (e.key === 'Enter') doLogin();
+});
+document.getElementById('userId').addEventListener('keypress', e => {
+  if (e.key === 'Enter') document.getElementById('userPass').focus();
+});
+
+// ==========================================
+//  PAGE TRANSITIONS
+// ==========================================
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => {
+    p.classList.remove('active');
+  });
+  document.getElementById(pageId).classList.add('active');
+}
+
+// ==========================================
+//  CONFETTI
+// ==========================================
+function launchConfetti() {
+  const colors = ['#FF6B9D', '#C84B8C', '#9B4DCA', '#FFD700', '#FF4B8A', '#D4A5F5', '#FFB3C6'];
+  for (let i = 0; i < 80; i++) {
+    setTimeout(() => {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.left = Math.random() * 100 + 'vw';
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.width = (Math.random() * 8 + 4) + 'px';
+      piece.style.height = (Math.random() * 8 + 4) + 'px';
+      piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      piece.style.animationDuration = (Math.random() * 3 + 2) + 's';
+      document.body.appendChild(piece);
+      setTimeout(() => piece.remove(), 5000);
+    }, i * 40);
+  }
+}
+
+// ==========================================
+//  GALLERY
+// ==========================================
+const NOTIFICATIONS = [
+  { icon: '💖', title: 'My Heart Belongs to You Baby', text: 'Every time I see you, my heart skips a beat. You are everything I have ever dreamed of.' },
+  { icon: '🌹', title: 'My Eternal Rose', text: 'Like a rose that never fades, my love for you will bloom forever and ever.' },
+  { icon: '✨', title: 'You Light Up My World Amul', text: 'In your eyes, I found a universe. You make every ordinary day feel magical.' },
+  { icon: '🥰', title: 'Crazy About You My Wife', text: 'The way you laugh, the way you smile — I am completely and hopelessly in love with you.' },
+  { icon: '🌸', title: 'My Beautiful Flower', text: 'You are the most beautiful soul I have ever encountered. Pure, gentle, and wonderful.' },
+  { icon: '💫', title: 'Written in the Stars', text: 'I believe the universe conspired to bring us together. Every star above knows your name.' },
+  { icon: '🎵', title: 'My Favorite Song', text: 'If my life were a song, you would be my favorite verse — the one I replay over and over.' },
+  { icon: '🌙', title: 'My Moonlight Amul', text: 'Even on the darkest nights, you are the moonlight that guides me home safely.' },
+  { icon: '💝', title: 'Friendship Turned Into Love', text: 'What started as the purest friendship blossomed into the most beautiful love story.' },
+  { icon: '🔥', title: 'You Set My Soul on Fire', text: 'Your passion, your energy, your spirit — you ignite something in me I never knew existed.' },
+  { icon: '🌊', title: 'Swept Away by You', text: 'You swept me off my feet like a wave, and I never want to find solid ground again.' },
+  { icon: '🦋', title: 'You Give Me Butterflies', text: 'Every single day with you still feels like falling in love for the very first time.' },
+  { icon: '☀️', title: 'My Sunshine', text: 'You are the reason I wake up smiling. My morning, my evening, my everything.' },
+  { icon: '💎', title: 'My Precious Gem', text: 'You are rarer and more precious than any diamond. I am the luckiest person alive.' },
+  { icon: '🌺', title: 'In Full Bloom With You', text: 'Since you came into my life, everything has been in full, beautiful, colorful bloom.' },
+  { icon: '🎯', title: 'You Hit the Bullseye', text: 'Of all the people in this world, you hit my heart with perfect precision. Just you.' },
+  { icon: '🏡', title: 'Home is Where You Are', text: 'No matter where life takes us, as long as you are there, I am home.' },
+  { icon: '⭐', title: 'My Shooting Star', text: 'When I wished upon a star, I got you. The universe was generous that day.' },
+  { icon: '🌈', title: 'My Colorful World Nikitha', text: 'Before you, the world was grey. Now every day is painted in the most gorgeous colors.' },
+  { icon: '💌', title: 'Forever My Love Letter', text: 'You are the love letter I never knew I was writing — perfect, heartfelt, and mine.' },
+];
+
+let currentIndex = 0;
+let totalMedia = 0;
+let isPlaying = false;
+let timer = null;
+let progressTimer = null;
+let currentVideo = null;
+let notifTimeout = null;
+let notifIndex = 0;
+
+function buildMediaItems() {
+  const wrapper = document.getElementById('mediaWrapper');
+  wrapper.innerHTML = '';
+
+  // Detect how many files exist by trying to load them (we build placeholders)
+  // Since we can't pre-check server files, we create items 1–50
+  // Images: image1.jpg, image2.jpg, ... Videos: image3.mp4, etc.
+  // User will place files in assets/ folder
+  // We'll create 50 placeholder slots and attempt loading each
+
+  totalMedia = 50; // default max, can be adjusted
+  
+  for (let i = 1; i <= totalMedia; i++) {
+    // Try image first, then video based on file existence
+    // We'll use a smart detection approach
+    const wrapper2 = document.createElement('div');
+    wrapper2.id = `media-slot-${i}`;
+    wrapper2.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;display:none;';
+    wrapper.appendChild(wrapper2);
+  }
+
+  loadMedia(1);
+}
+
+function getMediaElement(index) {
+  return document.getElementById(`media-slot-${index}`);
+}
+
+function loadMedia(index) {
+  currentIndex = index;
+  updateCounter();
+
+  // Clear all active
+  document.querySelectorAll('.media-item').forEach(el => el.classList.remove('active'));
+  if (currentVideo) {
+    currentVideo.pause();
+    currentVideo = null;
+  }
+
+  const slot = getMediaElement(index);
+  if (!slot) return;
+
+  // Hide all slots
+  document.querySelectorAll('[id^="media-slot-"]').forEach(s => s.style.display = 'none');
+  slot.style.display = 'block';
+  slot.innerHTML = '';
+
+  // Try image first
+  const img = document.createElement('img');
+  img.className = 'media-item';
+  img.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;';
+
+  const video = document.createElement('video');
+  video.className = 'media-item video-item';
+  video.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;';
+  video.playsInline = true;
+  video.muted = false;
+  video.controls = false;
+  video.autoplay = true;
+
+  // Try image extensions
+  const imgExts = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+  const vidExts = ['mp4', 'mov', 'webm'];
+
+  let loaded = false;
+
+  function tryLoad(extIndex, extList, element, isVideo) {
+    if (extIndex >= extList.length) {
+      if (!isVideo) {
+        // Try video
+        tryLoad(0, vidExts, video, true);
+      } else {
+        // Nothing found, skip
+        slot.innerHTML = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1A0A1A,#2D1040);"><div style="text-align:center;"><div style="font-size:4rem;">💖</div><div style="color:rgba(255,255,255,0.3);margin-top:10px;font-family:Dancing Script,cursive;font-size:1.5rem;">Our Memory #' + index + '</div></div></div>';
+        totalMedia = Math.min(totalMedia, index);
+        updateCounter();
+        startImageTimer(3000);
+      }
+      return;
+    }
+
+    const src = `assets/${isVideo ? 'image' : 'image'}${index}.${extList[extIndex]}`;
+    element.src = src;
+
+    if (isVideo) {
+      element.oncanplay = () => {
+        if (loaded) return;
+        loaded = true;
+        slot.appendChild(element);
+        requestAnimationFrame(() => element.classList.add('active'));
+        currentVideo = element;
+        document.getElementById('skipBtn').style.display = 'block';
+        element.play().catch(() => {});
+        element.onended = () => nextMedia();
+        showNotification(index);
+      };
+      element.onerror = () => tryLoad(extIndex + 1, extList, video, true);
+      element.load();
+    } else {
+      element.onload = () => {
+        if (loaded) return;
+        loaded = true;
+        slot.appendChild(element);
+        requestAnimationFrame(() => element.classList.add('active'));
+        document.getElementById('skipBtn').style.display = 'block';
+        startImageTimer(3000);
+        showNotification(index);
+      };
+      element.onerror = () => tryLoad(extIndex + 1, extList, img, false);
+    }
+  }
+
+  tryLoad(0, imgExts, img, false);
+}
+
+function startImageTimer(duration) {
+  clearTimeout(timer);
+  clearInterval(progressTimer);
+
+  const bar = document.getElementById('progressBar');
+  bar.style.transition = 'none';
+  bar.style.width = '0%';
+
+  requestAnimationFrame(() => {
+    bar.style.transition = `width ${duration}ms linear`;
+    bar.style.width = '100%';
+  });
+
+  timer = setTimeout(() => {
+    nextMedia();
+  }, duration);
+}
+
+function nextMedia() {
+  clearTimeout(timer);
+  clearInterval(progressTimer);
+
+  let next = currentIndex + 1;
+  if (next > totalMedia) next = 1; // loop
+  loadMedia(next);
+}
+
+function skipMedia() {
+  if (currentVideo) {
+    currentVideo.pause();
+    currentVideo = null;
+  }
+  clearTimeout(timer);
+  nextMedia();
+}
+
+function updateCounter() {
+  document.getElementById('galleryCounter').textContent = `${currentIndex} / ${totalMedia}`;
+}
+
+function showNotification(mediaIndex) {
+  clearTimeout(notifTimeout);
+  const container = document.getElementById('notifContainer');
+
+  // Remove existing notifs
+  const existing = container.querySelectorAll('.notif');
+  existing.forEach(n => {
+    n.classList.remove('show');
+    setTimeout(() => n.remove(), 500);
+  });
+
+  const notifIdx = (mediaIndex - 1) % NOTIFICATIONS.length;
+  const notif = NOTIFICATIONS[notifIdx];
+
+  setTimeout(() => {
+    const el = document.createElement('div');
+    el.className = 'notif';
+    el.innerHTML = `
+      <div class="notif-icon">${notif.icon}</div>
+      <div class="notif-content">
+        <div class="notif-title">${notif.title}</div>
+        <div class="notif-text">${notif.text}</div>
+      </div>
+    `;
+    container.appendChild(el);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => el.classList.add('show'));
+    });
+
+    notifTimeout = setTimeout(() => {
+      el.classList.remove('show');
+      setTimeout(() => el.remove(), 500);
+    }, 5000);
+  }, 800);
+}
+
+function openGallery() {
+  showPage('galleryPage');
+  launchConfetti();
+  setTimeout(() => {
+    buildMediaItems();
+  }, 300);
+}
+
+function goBack() {
+  if (currentVideo) {
+    currentVideo.pause();
+    currentVideo = null;
+  }
+  clearTimeout(timer);
+  showPage('birthdayPage');
+}
+
+// ==========================================
+//  Touch/Click anywhere on gallery to skip image
+// ==========================================
+document.getElementById('galleryPage').addEventListener('click', function(e) {
+  const skipBtn = document.getElementById('skipBtn');
+  const backBtn = document.querySelector('.gallery-back');
+  if (e.target === skipBtn || e.target === backBtn) return;
+
+  if (!currentVideo) {
+    skipMedia();
+  }
+});
+</script>
+</body>
+</html>
